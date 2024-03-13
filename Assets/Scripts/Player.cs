@@ -6,6 +6,9 @@ public class Player : MonoBehaviour
 {
     public Transform[] lanePositions;
     public float movementSpeed = 5f;
+    public float jumpForce = 10f; 
+    public Rigidbody rb;
+    private bool isGrounded = true;
 
     private int currentLane = 1;
     private Vector3 targetPosition;
@@ -15,7 +18,9 @@ public class Player : MonoBehaviour
         // Set the initial position to the position of lane 2
         transform.position = lanePositions[currentLane].position;
         targetPosition = transform.position;
-    }
+
+        rb = GetComponent<Rigidbody>();
+    } 
 
     private void Update()
     {
@@ -32,6 +37,11 @@ public class Player : MonoBehaviour
             MoveToLane(2);
         }
 
+        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
+        {
+            Jump();
+        }
+
         // Move the player towards the target position using lerp for smooth movement
         transform.position = Vector3.Lerp(transform.position, targetPosition, movementSpeed * Time.deltaTime);
     }
@@ -44,6 +54,23 @@ public class Player : MonoBehaviour
         {
             targetPosition = lanePositions[laneIndex].position;
             currentLane = laneIndex; 
+        }
+    }
+
+    private void Jump()
+    {
+        if (isGrounded)
+        {
+            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+            isGrounded = false; 
+        }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Ground"))
+        {
+            isGrounded = true; 
         }
     }
 }
