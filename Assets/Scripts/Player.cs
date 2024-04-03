@@ -24,6 +24,8 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
+        Debug.Log(SpeedManager.Speed);
+
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
             MoveToLane(0); 
@@ -71,6 +73,21 @@ public class Player : MonoBehaviour
         if (collision.gameObject.CompareTag("Ground"))
         {
             isGrounded = true; 
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.gameObject.name == "Fence" || other.gameObject.name == "Sway")
+        {
+            Destroy(other.gameObject);
+            SpeedManager.DecreaseSpeed(1f);
+        }
+
+        if(other.gameObject.name == "OneCoin" || other.gameObject.name == "TwoCoin")
+        {
+            Destroy(other.gameObject);
+            SpeedManager.IncreaseSpeed(0.3f);
         }
     }
 }
