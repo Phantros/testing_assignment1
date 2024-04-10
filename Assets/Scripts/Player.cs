@@ -46,8 +46,6 @@ public class Player : MonoBehaviour
         transform.position = Vector3.Lerp(transform.position, targetPosition, movementSpeed * Time.deltaTime);
 
         PlayerManager.Distance += SpeedManager.Speed * Time.deltaTime;
-
-        Debug.Log("Distance traveled: " + PlayerManager.Distance);
     }
 
     // Check if the lane index is valid and not the same as the current lane
