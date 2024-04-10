@@ -24,8 +24,6 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        Debug.Log(SpeedManager.Speed);
-
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
             MoveToLane(0); 
@@ -46,6 +44,10 @@ public class Player : MonoBehaviour
 
         // Move the player towards the target position using lerp for smooth movement
         transform.position = Vector3.Lerp(transform.position, targetPosition, movementSpeed * Time.deltaTime);
+
+        PlayerManager.Distance += SpeedManager.Speed * Time.deltaTime;
+
+        Debug.Log("Distance traveled: " + PlayerManager.Distance);
     }
 
     // Check if the lane index is valid and not the same as the current lane
@@ -81,13 +83,22 @@ public class Player : MonoBehaviour
         if(other.gameObject.name == "Fence" || other.gameObject.name == "Sway")
         {
             Destroy(other.gameObject);
+            PlayerManager.Lives -= 1;
             SpeedManager.DecreaseSpeed(1f);
         }
 
-        if(other.gameObject.name == "OneCoin" || other.gameObject.name == "TwoCoin")
+        if(other.gameObject.name == "OneCoin")
         {
             Destroy(other.gameObject);
             SpeedManager.IncreaseSpeed(0.3f);
+            PlayerManager.Score += 1;
+        }
+
+        if(other.gameObject.name == "TwoCoin")
+        {
+            Destroy(other.gameObject);
+            SpeedManager.IncreaseSpeed(0.3f);
+            PlayerManager.Score += 2;
         }
     }
 }
