@@ -24,4 +24,9 @@ public static class SpeedManager
             speed = 0;
         }
     }
+
+    public static void Reset()
+    {
+        speed = 5;
+    }
 }
