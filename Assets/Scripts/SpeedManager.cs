@@ -4,11 +4,12 @@ using UnityEngine;
 
 public static class SpeedManager
 {
-    private static float speed = 5.0f; 
+    public static float speed = 5.0f; 
 
     public static float Speed
     {
         get { return speed; }
+        set { speed = value; }
     }
 
     public static void IncreaseSpeed(float amount)

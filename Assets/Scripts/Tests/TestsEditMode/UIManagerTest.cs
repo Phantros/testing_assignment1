@@ -33,7 +33,6 @@ public class UIManagerTest
     [Test]
     public void UIManager_UpdateUI_UpdatesUIText()
     {
-        // Arrange
         GameObject uiManagerObject = new GameObject();
         UIManager uiManager = uiManagerObject.AddComponent<UIManager>();
 
@@ -49,10 +48,8 @@ public class UIManagerTest
         TextMeshProUGUI scoreText = new GameObject().AddComponent<TextMeshProUGUI>();
         uiManager.score = scoreText;
 
-        // Act
         uiManager.UpdateUI();
 
-        // Assert
         Assert.AreEqual("Lives: " + PlayerManager.Lives, livesText.text);
         Assert.AreEqual("Pickups: " + PlayerManager.Pickups, pickupsText.text);
         Assert.AreEqual("Distance: " + PlayerManager.Distance, distanceText.text); 
