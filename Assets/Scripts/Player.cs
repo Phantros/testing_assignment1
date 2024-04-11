@@ -42,6 +42,11 @@ public class Player : MonoBehaviour
             Jump();
         }
 
+        if(PlayerManager.Lives == 0)
+        {
+            GameManager.GameOver();
+        }
+
         // Move the player towards the target position using lerp for smooth movement
         transform.position = Vector3.Lerp(transform.position, targetPosition, movementSpeed * Time.deltaTime);
 
@@ -90,6 +95,7 @@ public class Player : MonoBehaviour
             Destroy(other.gameObject);
             SpeedManager.IncreaseSpeed(0.3f);
             PlayerManager.Score += 1;
+            PlayerManager.Pickups += 1;
         }
 
         if(other.gameObject.name == "TwoCoin")
@@ -97,6 +103,7 @@ public class Player : MonoBehaviour
             Destroy(other.gameObject);
             SpeedManager.IncreaseSpeed(0.3f);
             PlayerManager.Score += 2;
+            PlayerManager.Pickups += 1;
         }
     }
 }
