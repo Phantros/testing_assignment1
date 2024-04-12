@@ -47,6 +47,11 @@ public class Player : MonoBehaviour
             StartJump();
         }
 
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
+
         if (isJumping)
         {
             ContinueJump();
