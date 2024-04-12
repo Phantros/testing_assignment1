@@ -16,7 +16,6 @@ public class InitWithDefault : MonoBehaviour
     {
         await UnityServices.InitializeAsync();
 
-        Debug.Log("got synced");
         AnalyticsInitializedSuccessfully?.Invoke(this, new EventArgs());
         AskForConsent();
     }
@@ -32,15 +31,29 @@ public class InitWithDefault : MonoBehaviour
         AnalyticsService.Instance.StartDataCollection();
     }
 
-    public void ButtonClick()
+    public void RetryButtonClick()
     {
         AnalyticsService.Instance.RecordEvent("retryButtonClicked");
+    }
+
+    public void NextLevelTwoClick()
+    {
+        AnalyticsService.Instance.RecordEvent("levelTwoButtonClicked");
+    }
+
+    public void NextLevelThreeClick()
+    {
+        AnalyticsService.Instance.RecordEvent("levelThreeButtonClicked");
+    }
+
+    public void GameFinished()
+    {
+        AnalyticsService.Instance.RecordEvent("gameFinished");
     }
 
     public void LevelStarted()
     {
         AnalyticsService.Instance.RecordEvent("levelStarted");
-        Debug.Log("Level started");
     }
 
     public void PlayerDied()
@@ -48,9 +61,16 @@ public class InitWithDefault : MonoBehaviour
         AnalyticsService.Instance.RecordEvent("playerDied");
     }
 
-    public void LevelWon()
+    public void LevelWon(string level)
     {
-        AnalyticsService.Instance.RecordEvent("levelWon");
+        if(level == "Level1")
+            AnalyticsService.Instance.RecordEvent("levelOneWon");
+
+        if (level == "Level2")
+            AnalyticsService.Instance.RecordEvent("levelTwoWon");
+
+        if (level == "Level3")
+            AnalyticsService.Instance.RecordEvent("levelThreeWon"); 
     }
 
     public void MaxSpeedReached(float maxSpeed)
@@ -63,8 +83,6 @@ public class InitWithDefault : MonoBehaviour
         };
 
         AnalyticsService.Instance.RecordEvent(myEvent);
-
-        Debug.Log("Max Speed Sent");
     }
 
     public void CoinsCollected(int numberOfCoins)
@@ -78,7 +96,5 @@ public class InitWithDefault : MonoBehaviour
 
         // Record the coinsCollected event with the number of coins collected
         AnalyticsService.Instance.RecordEvent(myEvent);
-
-        Debug.Log("Coins data sent");
     }
 }

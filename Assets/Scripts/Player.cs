@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
@@ -110,9 +111,9 @@ public class Player : MonoBehaviour
         if(other.gameObject.name == "GameOver(Clone)")
         {
             dataCollector.CoinsCollected(PlayerManager.Pickups);
-            dataCollector.LevelWon();
             dataCollector.MaxSpeedReached(SpeedManager.Speed);
-            GameManager.GameOver();
+            dataCollector.LevelWon(SceneManager.GetActiveScene().name);
+            GameManager.LevelWon(SceneManager.GetActiveScene().name);
         }
 
         if (other.gameObject.name == "Fence(Clone)" || other.gameObject.name == "Sway(Clone)")
