@@ -7,7 +7,12 @@ public class Level1Manager : MonoBehaviour
     public Player player;
     public TextMeshProUGUI countdownText;
 
-    void Start()
+    public void Start()
+    {
+        InitializeLevel();
+    }
+    // Call this method to initialize the level
+    public void InitializeLevel()
     {
         player.enabled = false;
         SpeedManager.Speed = 0;
@@ -17,13 +22,13 @@ public class Level1Manager : MonoBehaviour
 
     IEnumerator StartLevelCountdown()
     {
-        int countdownValue = 3; 
+        int countdownValue = 3;
 
         while (countdownValue > 0)
         {
-            countdownText.text = countdownValue.ToString(); 
-            yield return new WaitForSeconds(1f); 
-            countdownValue--; 
+            countdownText.text = countdownValue.ToString();
+            yield return new WaitForSeconds(1f);
+            countdownValue--;
         }
 
         countdownText.text = "GO";

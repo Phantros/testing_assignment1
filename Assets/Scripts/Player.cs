@@ -6,43 +6,50 @@ public class Player : MonoBehaviour
 {
     public Transform[] lanePositions;
     public float movementSpeed = 5f;
-    public float jumpForce = 10f; 
+    public float jumpForce = 10f;
+    public float maxJumpTime = 0.5f; 
     public Rigidbody rb;
     private bool isGrounded = true;
+    private bool isJumping = false;
+    private float jumpTimeCounter;
 
     private int currentLane = 1;
     private Vector3 targetPosition;
 
     private void Start()
     {
-        // Set the initial position to the position of lane 2
         transform.position = lanePositions[currentLane].position;
         targetPosition = transform.position;
 
         rb = GetComponent<Rigidbody>();
-    } 
+    }
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
-            MoveToLane(0); 
+            MoveToLane(0);
         }
         else if (Input.GetKeyDown(KeyCode.DownArrow))
         {
-            MoveToLane(1); 
+            MoveToLane(1);
         }
         else if (Input.GetKeyDown(KeyCode.RightArrow))
         {
             MoveToLane(2);
         }
 
-        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
+        if (Input.GetKeyDown(KeyCode.Space) && isGrounded && !isJumping)
         {
-            Jump();
+            StartJump();
         }
 
-        if(PlayerManager.Lives == 0)
+        if (isJumping)
+        {
+            ContinueJump();
+        }
+
+        if (PlayerManager.Lives == 0)
         {
             GameManager.GameOver();
         }
@@ -53,23 +60,34 @@ public class Player : MonoBehaviour
         PlayerManager.Distance += SpeedManager.Speed * Time.deltaTime;
     }
 
-    // Check if the lane index is valid and not the same as the current lane
-    // If so, set the target position to the lane position and update the current lane
     private void MoveToLane(int laneIndex)
     {
         if (laneIndex >= 0 && laneIndex < lanePositions.Length && laneIndex != currentLane)
         {
             targetPosition = lanePositions[laneIndex].position;
-            currentLane = laneIndex; 
+            currentLane = laneIndex;
         }
     }
 
-    private void Jump()
+    private void StartJump()
     {
-        if (isGrounded)
+        rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z); // Reset vertical velocity
+        rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+        jumpTimeCounter = maxJumpTime;
+        isJumping = true;
+        isGrounded = false;
+    }
+
+    private void ContinueJump()
+    {
+        if (jumpTimeCounter > 0)
         {
-            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-            isGrounded = false; 
+            rb.AddForce(Vector3.up * jumpForce * Time.deltaTime, ForceMode.Impulse);
+            jumpTimeCounter -= Time.deltaTime;
+        }
+        else
+        {
+            isJumping = false;
         }
     }
 
@@ -77,20 +95,26 @@ public class Player : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Ground"))
         {
-            isGrounded = true; 
+            isGrounded = true;
+            isJumping = false;
         }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject.name == "Fence" || other.gameObject.name == "Sway")
+        if(other.gameObject.name == "GameOver(Clone)")
+        {
+            GameManager.GameOver();
+        }
+
+        if (other.gameObject.name == "Fence(Clone)" || other.gameObject.name == "Sway(Clone)")
         {
             Destroy(other.gameObject);
             PlayerManager.Lives -= 1;
             SpeedManager.DecreaseSpeed(1f);
         }
 
-        if(other.gameObject.name == "OneCoin")
+        if (other.gameObject.name == "OneCoin(Clone)")
         {
             Destroy(other.gameObject);
             SpeedManager.IncreaseSpeed(0.3f);
@@ -98,7 +122,7 @@ public class Player : MonoBehaviour
             PlayerManager.Pickups += 1;
         }
 
-        if(other.gameObject.name == "TwoCoin")
+        if (other.gameObject.name == "TwoCoin(Clone)")
         {
             Destroy(other.gameObject);
             SpeedManager.IncreaseSpeed(0.3f);
