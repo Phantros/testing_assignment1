@@ -14,15 +14,15 @@ public class PrefabSpawner : MonoBehaviour
     public float prefabSpawnInterval = 0.8f;
     public float coinSpawnInterval = 0.05f;
 
-    private List<(GameObject prefab, int lane)> spawnSequence = new List<(GameObject prefab, int lane)>();
+    public List<(GameObject prefab, int lane)> spawnSequence = new List<(GameObject prefab, int lane)>();
 
-    private void Start()
+    public void Start()
     {
         CreateSpawnSequence();
         StartCoroutine(SpawnPrefabs());
     }
 
-    private void CreateSpawnSequence()
+    public void CreateSpawnSequence()
     {
         spawnSequence.Add((oneCoinPrefab, 1)); // Coingroup on lane 1
         spawnSequence.Add((fencePrefab, 3)); // Fence on lane 3

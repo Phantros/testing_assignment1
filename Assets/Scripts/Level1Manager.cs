@@ -33,7 +33,7 @@ public class Level1Manager : MonoBehaviour
         }
 
         countdownText.text = "GO";
-        dataCollector.LevelStarted();
+        //dataCollector.LevelStarted();
 
         player.enabled = true;
         //SpeedManager.Reset();
