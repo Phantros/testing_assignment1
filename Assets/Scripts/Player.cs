@@ -9,6 +9,8 @@ public class Player : MonoBehaviour
     public float jumpForce = 10f;
     public float maxJumpTime = 0.5f; 
     public Rigidbody rb;
+    public InitWithDefault dataCollector;
+
     private bool isGrounded = true;
     private bool isJumping = false;
     private float jumpTimeCounter;
@@ -51,6 +53,9 @@ public class Player : MonoBehaviour
 
         if (PlayerManager.Lives == 0)
         {
+            dataCollector.CoinsCollected(PlayerManager.Pickups);
+            dataCollector.PlayerDied();
+            dataCollector.MaxSpeedReached(SpeedManager.Speed);
             GameManager.GameOver();
         }
 
@@ -104,6 +109,9 @@ public class Player : MonoBehaviour
     {
         if(other.gameObject.name == "GameOver(Clone)")
         {
+            dataCollector.CoinsCollected(PlayerManager.Pickups);
+            dataCollector.LevelWon();
+            dataCollector.MaxSpeedReached(SpeedManager.Speed);
             GameManager.GameOver();
         }
 

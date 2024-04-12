@@ -6,6 +6,7 @@ public class Level1Manager : MonoBehaviour
 {
     public Player player;
     public TextMeshProUGUI countdownText;
+    public InitWithDefault dataCollector;
 
     public void Start()
     {
@@ -15,7 +16,7 @@ public class Level1Manager : MonoBehaviour
     public void InitializeLevel()
     {
         player.enabled = false;
-        SpeedManager.Speed = 0;
+        //SpeedManager.Speed = 0;
 
         StartCoroutine(StartLevelCountdown());
     }
@@ -32,9 +33,10 @@ public class Level1Manager : MonoBehaviour
         }
 
         countdownText.text = "GO";
+        dataCollector.LevelStarted();
 
         player.enabled = true;
-        SpeedManager.Reset();
+        //SpeedManager.Reset();
 
         yield return new WaitForSeconds(0.8f);
 

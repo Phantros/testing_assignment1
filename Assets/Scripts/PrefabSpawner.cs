@@ -61,6 +61,10 @@ public class PrefabSpawner : MonoBehaviour
         spawnSequence.Add((fencePrefab, 3)); // Fence on lane 3
         spawnSequence.Add((swayPrefab, 2)); // Sway on lane 2
         spawnSequence.Add((oneCoinPrefab, 3)); // Coingroup on lane 3
+        spawnSequence.Add((swayPrefab, 2)); // Sway on lane 2
+        spawnSequence.Add((oneCoinPrefab, 2)); // Coingroup on lane 3
+        spawnSequence.Add((swayPrefab, 2)); // Sway on lane 2
+        spawnSequence.Add((oneCoinPrefab, 1)); // Coingroup on lane 3
         spawnSequence.Add((goToGameOver, 2)); //
     }
 
